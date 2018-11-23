@@ -461,6 +461,7 @@ osgDB::ReaderWriter::ReadResult OsgFbxReader::readFbxNode(
     }
 
     unsigned nMaterials = pNode->GetMaterialCount();
+	std::cout << nMaterials << std::endl;
     std::vector<StateSetContent > stateSetList;
 
     for (unsigned i = 0; i < nMaterials; ++i)

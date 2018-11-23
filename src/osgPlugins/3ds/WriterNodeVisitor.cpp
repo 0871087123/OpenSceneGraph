@@ -584,8 +584,22 @@ std::string utf8TruncateBytes(const std::string & s, std::string::size_type byte
 #    define truncateFilenameBytes(str, size) std::string(str, 0, size)
 #endif
 
+static std::map<std::string, int> namemap;
+
 std::string WriterNodeVisitor::getUniqueName(const std::string& _defaultValue, bool isNodeName, const std::string & _defaultPrefix, int currentPrefixLen)
 {
+	std::string name = _defaultValue;
+	if (namemap.find(name) != namemap.end()) {
+		namemap[name] += 1;
+		name = name + "." + std::to_string(namemap[name]);
+	}
+	else {
+		namemap[name] = 1;
+	}
+	// TODO : temp fix for node name
+	if (name.length() >= 63)
+		name = name.substr(name.length() - 64);
+	return name;
     //const unsigned int MAX_LENGTH = maxNameLen(_extendedFilePaths);
     const unsigned int MAX_PREFIX_LENGTH = _extendedFilePaths ? 52 : 6;        // Arbitrarily defined for short names, kept enough room for displaying UINT_MAX (10 characters) for long names.
     assert(_defaultPrefix.length()<=4);        // Default prefix is too long (implementation error)

@@ -720,6 +720,12 @@ osgDB::ReaderWriter::ReadResult OsgFbxReader::readMesh(
         const FbxLayer* pFbxLayer = fbxMesh->GetLayer(cLayerIndex);
         if (!pFbxLayer)
             continue;
+		//std::cout << fbxMesh->GetElementMaterialCount() << std::endl;
+		for (int i = 0; i < fbxMesh->GetElementMaterialCount(); i++)
+		{
+			FbxGeometryElementMaterial * pEMat = fbxMesh->GetElementMaterial(i);
+			//std::cout << pEMat->GetName() << std::endl;
+		}
 
         // get normals, colors and materials...
         if (!pFbxNormals)

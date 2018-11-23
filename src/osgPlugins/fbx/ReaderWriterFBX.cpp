@@ -226,8 +226,13 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
         }
 
         CleanUpFbx cleanUpFbx(pSdkManager);
+		FbxIOSettings * ios = FbxIOSettings::Create(pSdkManager, IOSROOT);
+		// set some IOSettings options 
+		ios->SetBoolProp(IMP_FBX_MATERIAL, true);
+		ios->SetBoolProp(IMP_FBX_TEXTURE, true);
+		ios->SetBoolProp(IMP_FBX_EXTRACT_EMBEDDED_DATA, true);
 
-        pSdkManager->SetIOSettings(FbxIOSettings::Create(pSdkManager, IOSROOT));
+        pSdkManager->SetIOSettings(ios);
 
         FbxScene* pScene = FbxScene::Create(pSdkManager, "");
 
@@ -240,7 +245,7 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
 
         FbxImporter* lImporter = FbxImporter::Create(pSdkManager, "");
 
-        if (!lImporter->Initialize(utf8filename.c_str(), -1, pSdkManager->GetIOSettings()))
+        if (!lImporter->Initialize(utf8filename.c_str(), -1, ios))
         {
 #if FBXSDK_VERSION_MAJOR < 2014
             return std::string(lImporter->GetLastErrorString());
@@ -259,6 +264,10 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
             lTakeInfo->mSelect = true;
         }
 
+		int vm, vm1, vm2;
+		lImporter->GetFileVersion(vm, vm1, vm2);
+		std::cout << vm << ", "  << vm1 << "," << vm2 << std::endl;
+
         if (!lImporter->Import(pScene))
         {
 #if FBXSDK_VERSION_MAJOR < 2014
@@ -268,7 +277,9 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
 #endif
         }
 
-        //FbxAxisSystem::OpenGL.ConvertScene(pScene);        // Doesn't work as expected. Still need to transform vertices.
+		std::cout << pScene->GetMaterialCount() << std::endl;
+		std::cout << pScene->GetTextureCount() << std::endl;
+		//FbxAxisSystem::OpenGL.ConvertScene(pScene);        // Doesn't work as expected. Still need to transform vertices.
 
         if (FbxNode* pNode = pScene->GetRootNode())
         {
@@ -495,8 +506,12 @@ osgDB::ReaderWriter::WriteResult ReaderWriterFBX::writeNode(
         }
 
         CleanUpFbx cleanUpFbx(pSdkManager);
+		FbxIOSettings * ios = FbxIOSettings::Create(pSdkManager, IOSROOT);
+		// set some IOSettings options 
+		ios->SetBoolProp(IMP_FBX_MATERIAL, true);
+		ios->SetBoolProp(IMP_FBX_TEXTURE, true);
 
-        pSdkManager->SetIOSettings(FbxIOSettings::Create(pSdkManager, IOSROOT));
+        pSdkManager->SetIOSettings(ios);
 
         bool useFbxRoot = false;
         bool ascii(false);

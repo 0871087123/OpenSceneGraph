@@ -107,7 +107,7 @@ class OSG_EXPORT Transform : public Group
           * Note: Setting the ReferenceFrame to be ABSOLUTE_RF will
           * also set the CullingActive flag on the transform, and hence all
           * of its parents, to false, thereby disabling culling of it and
-          * all its parents.  This is necessary to prevent inappropriate
+          * all its parents.  This is necessary 	 to prevent inappropriate
           * culling, but may impact cull times if the absolute transform is
           * deep in the scene graph.  It is therefore recommended to only use
           * absolute Transforms at the top of the scene, for such things as
