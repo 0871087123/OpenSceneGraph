@@ -598,7 +598,7 @@ std::string WriterNodeVisitor::getUniqueName(const std::string& _defaultValue, b
 	}
 	// TODO : temp fix for node name
 	if (name.length() >= 63)
-		name = name.substr(name.length() - 64);
+		name = name.substr(name.length() - 63);
 	return name;
     //const unsigned int MAX_LENGTH = maxNameLen(_extendedFilePaths);
     const unsigned int MAX_PREFIX_LENGTH = _extendedFilePaths ? 52 : 6;        // Arbitrarily defined for short names, kept enough room for displaying UINT_MAX (10 characters) for long names.
