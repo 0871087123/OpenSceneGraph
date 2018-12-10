@@ -519,12 +519,12 @@ ELSE()
     OPTION(OSG_CPP_EXCEPTIONS_AVAILABLE "Set to OFF to disable compile of OSG components that use C++ exceptions." ON)
 ENDIF()
 
-SET(OSG_GL_CONTEXT_VERSION "1.0" CACHE STRING "GL Context String to pass when creaing graphics contexts")
 
 # Map the OSG_GL*_AVAILABLE settings to OpenGL header settings
+SET(DEFAULT_GL_CONTEXT_VERSION "1.0")
 IF (OSG_GL3_AVAILABLE)
 
-    SET(OSG_GL_CONTEXT_VERSION "3.3")
+    SET(DEFAULT_GL_CONTEXT_VERSION "3.3")
 
     IF (APPLE)
         SET(OPENGL_HEADER1 "#include <OpenGL/gl.h>" CACHE STRING "#include<> line for OpenGL Header")
@@ -576,6 +576,8 @@ ELSE()
         SET(OPENGL_HEADER2 "" CACHE STRING "#include<> line for additional OpenGL Headers if required")
     ENDIF()
 ENDIF()
+
+SET(OSG_GL_CONTEXT_VERSION ${DEFAULT_GL_CONTEXT_VERSION} CACHE STRING "GL Context String to pass when creaing graphics contexts")
 
 IF (OSG_GL1_AVAILABLE)
     SET(OSG_GL1_FEATURES 1)
@@ -1315,6 +1317,13 @@ ENDIF()
 IF(NOT OSG_CONFIG_HAS_BEEN_RUN_BEFORE)
     SET(OSG_CONFIG_HAS_BEEN_RUN_BEFORE 1 CACHE INTERNAL "Flag to track whether this is the first time running CMake or if CMake has been configured before")
 ENDIF()
+
+#-----------------------------------------------------------------------------
+# add clobber build target to clear all the non git registered files/directories
+#-----------------------------------------------------------------------------
+add_custom_target(clobber
+    COMMAND git clean -d -f -x
+)
 
 #-----------------------------------------------------------------------------
 ### uninstall target
