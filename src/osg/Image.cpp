@@ -579,32 +579,30 @@ unsigned int Image::computeNumComponents(GLenum pixelFormat)
         case(GL_ALPHA32UI_EXT): return 1;
         case(GL_ALPHA16F_ARB): return 1;
         case(GL_ALPHA32F_ARB): return 1;
-		case(GL_R16F) :
-		case(GL_R32F) :
-		case(GL_R8) :
-		case(GL_R8_SNORM) :
-		case(GL_R16) :
-		case(GL_R16_SNORM) :
-		case(GL_R8I) :
-		case(GL_R8UI) :
-		case(GL_R16I) :
-		case(GL_R16UI) :
-		case(GL_R32I) :
-		case(GL_R32UI) :
-			return 1;
-		case(GL_RG16F) :
-		case(GL_RG32F) :
-		case(GL_RG8) :
-		case(GL_RG8_SNORM) :
-		case(GL_RG16) :
-		case(GL_RG16_SNORM) :
-		case(GL_RG8I) :
-		case(GL_RG8UI) :
-		case(GL_RG16I) :
-		case(GL_RG16UI) :
-		case(GL_RG32I) :
-		case(GL_RG32UI) :
-			return 2;
+		case(GL_R16F) : return 1;
+		case(GL_R32F) : return 1;
+		case(GL_R8) : return 1;
+		case(GL_R8_SNORM) : return 1;
+		case(GL_R16) : return 1;
+		case(GL_R16_SNORM) : return 1;
+		case(GL_R8I) : return 1;
+		case(GL_R8UI) : return 1;
+		case(GL_R16I) : return 1;
+		case(GL_R16UI) : return 1;
+		case(GL_R32I) : return 1;
+		case(GL_R32UI) : return 1;
+		case(GL_RG16F) : return 2;
+		case(GL_RG32F) : return 2;
+		case(GL_RG8) : return 2;
+		case(GL_RG8_SNORM) : return 2;
+		case(GL_RG16) : return 2;
+		case(GL_RG16_SNORM) : return 2;
+		case(GL_RG8I) : return 2;
+		case(GL_RG8UI) : return 2;
+		case(GL_RG16I) : return 2;
+		case(GL_RG16UI) : return 2;
+		case(GL_RG32I) : return 2;
+		case(GL_RG32UI) : return 2;
         case(GL_RGB): return 3;
         case(GL_BGR): return 3;
         case(GL_RGB8I_EXT): return 3;

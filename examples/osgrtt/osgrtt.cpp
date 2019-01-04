@@ -53,7 +53,7 @@ public:
 		setName("RTT");
 
 		_texture = new osg::Texture2D();
-		_texture->setSourceFormat(GL_RG);
+		_texture->setSourceFormat(GL_R);
 		_texture->setInternalFormat(GL_R32F);
 		_texture->setSourceType(GL_FLOAT);
 		_texture->setTextureSize(1920, 1080);
@@ -78,8 +78,7 @@ public:
 			img->readImageFromCurrentTexture(ri.getContextID(), true, GL_FLOAT);
 			GLenum err = glGetError();
 			std::cout << std::to_string(err) << std::endl;
-			float * test = (float *)img->data();
-			std::cout << std::to_string(*test) << std::endl;
+			std::cout << std::to_string(*((float *)img->data() + 1)) << std::endl;
 		}));
 	}
 
