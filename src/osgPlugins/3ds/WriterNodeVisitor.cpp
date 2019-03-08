@@ -528,7 +528,6 @@ void WriterNodeVisitor::writeMaterials()
                         path = osgDB::getPathRelative(_srcDirectory, mat.image->getFileName());
                     }
                     path = convertExt(path, _extendedFilePaths);
-                    path = getUniqueName(path, false, "");
 
                     // Write
                     const std::string fullPath( osgDB::concatPaths(_directory, path) );
@@ -539,6 +538,7 @@ void WriterNodeVisitor::writeMaterials()
                     _imageSet.insert(ImageSet::value_type(mat.image.get(), path));
                 }
 
+				std::cout << std::string(mat3ds->texture1_map.name) << std::endl;
                 Lib3dsTextureMap & tex = mat3ds->texture1_map;
                 osgDB::stringcopyfixedsize(tex.name, path.c_str());
                 // Here we don't assume anything about initial flags state (actually it is set to LIB3DS_TEXTURE_NO_TILE by lib3DS, but this is subject to change)
@@ -1016,7 +1016,15 @@ WriterNodeVisitor::createListTriangle(osg::Geometry * geo,
             return;
         }
         texcoords = true;
-    }
+	}
+	else {
+		auto ss = geo->getStateSet();
+		if (ss) {
+			auto tcont = ss->getTextureAttributeList();
+			if (tcont.size() != 0)
+				OSG_NOTIFY(osg::WARN) << "No Texture Coord But Has Texture" << std::endl;
+		}
+	}
 
     int material = processStateSet(_currentStateSet.get());
 

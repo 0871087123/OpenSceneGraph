@@ -1141,6 +1141,18 @@ osg::Drawable* ReaderWriter3DS::ReaderObject::createDrawable(Lib3dsMesh *m,FaceL
     return geom;
 }
 
+std::vector<std::string> split(const std::string& s, char delimiter)
+{
+	std::vector<std::string> tokens;
+	std::string token;
+	std::istringstream tokenStream(s);
+	while (std::getline(tokenStream, token, delimiter))
+	{
+		tokens.push_back(token);
+	}
+	return tokens;
+}
+
 
 osg::Texture2D*  ReaderWriter3DS::ReaderObject::createTexture(Lib3dsTextureMap *texture,const char* label,bool& transparency)
 {
@@ -1156,7 +1168,10 @@ osg::Texture2D*  ReaderWriter3DS::ReaderObject::createTexture(Lib3dsTextureMap *
         }
 
         // Texture not in cache: locate and load.
-        std::string fileName = osgDB::findFileInDirectory(texture->name,_directory,osgDB::CASE_INSENSITIVE);
+		std::string tname(texture->name);
+		auto pamars = split(tname, '.');
+		tname = pamars[0] + "." + pamars[1];
+		std::string fileName = osgDB::findFileInDirectory(tname.c_str(), _directory, osgDB::CASE_INSENSITIVE);
         if (fileName.empty())
         {
             // file not found in .3ds file's directory, so we'll look in the datafile path list.
