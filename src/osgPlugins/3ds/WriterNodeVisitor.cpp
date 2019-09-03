@@ -991,7 +991,31 @@ WriterNodeVisitor::createListTriangle(osg::Geometry * geo,
 
     // Texture coords
     const osg::Array * basetexvecs = geo->getNumTexCoordArrays()>=1 ? geo->getTexCoordArray(0) : NULL;
-    if (basetexvecs)
+	if (geo->getStateSet()) {
+		auto ss = geo->getStateSet();
+		auto tlist = ss->getTextureAttributeList();
+		auto tlist2 = ss->getTextureModeList();
+		if ((tlist.size() > 0) && (basetexvecs == nullptr)) {
+			OSG_NOTIFY(osg::NOTICE) << "No text coord but has tex obj, will generate fake tex coords" << std::endl;
+			basetexvecs = new osg::Vec2Array;
+			auto varray = geo->getVertexArray();
+			if (varray->getType() == osg::Array::Vec3ArrayType) {
+				osg::Vec3Array * vr = (osg::Vec3Array *)varray;
+				for (osg::Vec3 pt : *vr) {
+					((osg::Vec2Array *)basetexvecs)->push_back(osg::Vec2(pt.x(), pt.y()));
+				}
+				geo->setTexCoordArray(0, (osg::Vec2Array *)basetexvecs, osg::Array::BIND_PER_VERTEX);
+			}
+			else if (varray->getType() == osg::Array::Vec3dArrayType) {
+				osg::Vec3dArray * vr = (osg::Vec3dArray *)varray;
+				for (osg::Vec3d pt : *vr) {
+					((osg::Vec2Array *)basetexvecs)->push_back(osg::Vec2(pt.x(), pt.y()));
+				}
+				geo->setTexCoordArray(0, (osg::Vec2Array *)basetexvecs, osg::Array::BIND_PER_VERTEX);
+			}
+		}
+	}
+	if (basetexvecs)
     {
         unsigned int nb = basetexvecs->getNumElements();
         if (nb != geo->getVertexArray()->getNumElements())
